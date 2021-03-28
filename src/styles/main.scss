@@ -1,0 +1,11 @@
+// noinspection CssInvalidAtRule
+@import-normalize;
+
+body {
+  margin: 0;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Noto Sans SC', 'PingFang SC', miui, -apple-system, system-ui, 'Avenir',
+    Helvetica, Arial, sans-serif;
+}
