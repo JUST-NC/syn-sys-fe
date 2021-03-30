@@ -1,32 +1,43 @@
 import React from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
-import { routes, RouteType } from './routes';
+import { route, RouteModel } from './routes';
+import { observer } from 'mobx-react-lite';
+import { userStore } from './stores/user-store';
 
-const RouteWithSubRoutes = (route: RouteType) => {
-  return (
-    <Route
-      path={route.path}
-      render={(props) => (
-        // pass the sub-routes down to keep nesting
-        <route.component {...props} routes={route.routes} />
-      )}
-    />
-  );
-};
+/**
+ * 带二级路由的路由组件
+ *
+ * TODO: 实现二级路由的部分
+ */
+const RouteWithSubRoutes = observer(
+  ({ Component, path, auth = false, exact = false, ...rest }: RouteModel) => (
+    <Route exact={exact} path={path}>
+      {({ location }) => {
+        if (auth && !userStore.logged) {
+          // 需要认证 且 未登录
+          return <Redirect to="/login" />;
+        } else if (userStore.logged && location.pathname === '/login') {
+          //  已登录 且 路径为 /login
+          return <Redirect to="/" />;
+        } else {
+          return <Component {...rest} />;
+        }
+      }}
+    </Route>
+  ),
+);
 
-function App() {
-  let isLogin = false;
+const App = () => {
   return (
     <BrowserRouter>
       <Switch>
-        {!isLogin && <Redirect exact from="/" to="/login" />}
-        {routes.map((route, i) => (
+        {route.map((route, i) => (
           <RouteWithSubRoutes key={i} {...route} />
         ))}
       </Switch>
     </BrowserRouter>
   );
-}
+};
 
 export default App;
