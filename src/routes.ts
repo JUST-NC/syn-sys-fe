@@ -14,7 +14,7 @@ export interface RouteModel {
   routes?: RouteModel[];
   // 是否需要认证，默认 false，在拦截器中处理
   auth?: boolean;
-  // 是否需要精确匹配
+  // 是否需要精确匹配，默认 false，在拦截器中处理
   exact?: boolean;
 }
 
@@ -23,25 +23,28 @@ export interface RouteModel {
  *
  * Login 在 App.tsx 中配置
  */
-const route: RouteModel[] = [
-  {
-    path: '/login',
-    Component: Login,
-  },
-  {
-    path: '/about',
-    Component: About,
-  },
-  {
-    path: '/',
-    Component: Home,
-    auth: true,
-    exact: true,
-  },
-  {
-    path: '*',
-    Component: NotFound,
-  },
-];
 
-export { route };
+const LOGIN_PAGE: RouteModel = {
+  path: '/login',
+  Component: Login,
+};
+const ABOUT_PAGE: RouteModel = {
+  path: '/about',
+  Component: About,
+};
+
+const HOME_PAGE: RouteModel = {
+  path: '/',
+  Component: Home,
+  auth: true,
+  exact: true,
+};
+
+const NOT_FOUND_PAGE: RouteModel = {
+  path: '*',
+  Component: NotFound,
+};
+
+const route: RouteModel[] = [LOGIN_PAGE, ABOUT_PAGE, HOME_PAGE, NOT_FOUND_PAGE];
+
+export { LOGIN_PAGE, ABOUT_PAGE, HOME_PAGE, NOT_FOUND_PAGE, route };
