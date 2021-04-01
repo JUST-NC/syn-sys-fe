@@ -1,0 +1,11 @@
+.loginPaper {
+  $v-spacing: 8vh;
+  $h-spacing: 10vw;
+
+  box-sizing: border-box;
+  padding: $v-spacing $h-spacing 0 $h-spacing;
+
+  > div {
+    margin-bottom: $v-spacing;
+  }
+}

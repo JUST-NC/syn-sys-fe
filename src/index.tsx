@@ -4,6 +4,12 @@ import './styles/main.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { HelmetProvider } from 'react-helmet-async';
+import localforage from 'localforage';
+
+// 数据库名初始化
+localforage.config({
+  name: 'syn-sys',
+});
 
 ReactDOM.render(
   <React.StrictMode>
