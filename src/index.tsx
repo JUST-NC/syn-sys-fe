@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './styles/main.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { HelmetProvider } from 'react-helmet-async';
 import localforage from 'localforage';
+import { GlobalStyles } from 'twin.macro';
+import { StylesProvider } from '@material-ui/core/styles';
 
 // 数据库名初始化
 localforage.config({
@@ -14,7 +15,10 @@ localforage.config({
 ReactDOM.render(
   <React.StrictMode>
     <HelmetProvider>
-      <App />
+      <StylesProvider injectFirst>
+        <GlobalStyles />
+        <App />
+      </StylesProvider>
     </HelmetProvider>
   </React.StrictMode>,
   document.getElementById('root'),
