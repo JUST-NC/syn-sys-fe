@@ -1,26 +1,44 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
-function App() {
+import { HOME_PAGE, LOGIN_PAGE, route, RouteModel } from './routes';
+import { observer } from 'mobx-react-lite';
+import { userStore } from './stores/user-store';
+
+/**
+ * 带二级路由的路由组件
+ *
+ * TODO: 实现二级路由的部分
+ */
+const RouteWithSubRoutes = observer(
+  ({ Component, path, auth = false, exact = false, ...rest }: RouteModel) => (
+    <Route exact={exact} path={path}>
+      {({ location }) => {
+        // 需要认证 且 未登录
+        if (auth && !userStore.logged) {
+          return <Redirect to={LOGIN_PAGE.path} />;
+        }
+        //  已登录 且 路径为 /login
+        else if (userStore.logged && location.pathname === LOGIN_PAGE.path) {
+          return <Redirect to={HOME_PAGE.path} />;
+        } else {
+          return <Component {...rest} />;
+        }
+      }}
+    </Route>
+  ),
+);
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Switch>
+        {route.map((route, i) => (
+          <RouteWithSubRoutes key={i} {...route} />
+        ))}
+      </Switch>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
