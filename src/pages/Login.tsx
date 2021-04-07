@@ -1,9 +1,13 @@
 import { Helmet } from 'react-helmet-async';
 import { LoginForm } from '../components/LoginForm';
-import { Paper, Typography } from '@material-ui/core';
+import { Link, Paper, Typography } from '@material-ui/core';
 import React from 'react';
-import styles from '../styles/Login.module.scss';
+import { Link as RouterLink } from 'react-router-dom';
+import { HOME_PAGE } from '../routes';
+import tw from 'twin.macro';
 import Div100vh from 'react-div-100vh';
+
+const Block = tw.div`mb-20`;
 
 const Login: React.FC = () => {
   return (
@@ -12,19 +16,30 @@ const Login: React.FC = () => {
         <title>登录</title>
       </Helmet>
 
-      <Paper className={styles.loginPaper} component={Div100vh}>
-        <div>
-          <Typography variant={'h6'} gutterBottom={true}>
+      <Paper elevation={0} component={Div100vh} tw={'py-20 px-10'}>
+        <Block>
+          <Typography tw={'text-gray-400'} variant={'h6'} gutterBottom={true}>
             江苏科技大学
           </Typography>
-          <Typography variant={'h3'} gutterBottom={true}>
-            欢迎回来
+          <Typography tw={'text-gray-800'} variant={'h3'} gutterBottom={true}>
+            欢迎回来！
           </Typography>
-        </div>
+        </Block>
 
-        <div>
+        <Block>
           <LoginForm />
-        </div>
+        </Block>
+
+        <Block tw={'text-center -mt-10'}>
+          <Link
+            tw={'text-gray-400'}
+            color={'initial'}
+            component={RouterLink}
+            to={HOME_PAGE.path}
+          >
+            忘记密码？
+          </Link>
+        </Block>
       </Paper>
     </>
   );
