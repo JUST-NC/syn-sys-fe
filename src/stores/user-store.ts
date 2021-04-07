@@ -1,7 +1,6 @@
 import { autorun, observable } from 'mobx';
 import { BasicUser } from '../models/user-model';
 import * as localforage from 'localforage';
-
 export interface UserStore {
   // 用户基本信息
   basic?: BasicUser;
@@ -33,6 +32,12 @@ autorun(() => {
       .finally(() => {
         console.log('info:' + userStore.basic);
       });
+  }
+});
+
+autorun(() => {
+  if (userStore.logged) {
+    localforage.setItem('user-info', userStore.basic).then((r) => console.log(r));
   }
 });
 
