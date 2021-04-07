@@ -28,6 +28,7 @@ const LOGIN_PAGE: RouteModel = {
   path: '/login',
   Component: Login,
 };
+
 const ABOUT_PAGE: RouteModel = {
   path: '/about',
   Component: About,
