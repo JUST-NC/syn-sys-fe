@@ -6,6 +6,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import localforage from 'localforage';
 import { GlobalStyles } from 'twin.macro';
 import { StylesProvider } from '@material-ui/core/styles';
+import { css, Global } from '@emotion/react';
 
 // 数据库名初始化
 localforage.config({
@@ -17,6 +18,13 @@ ReactDOM.render(
     <HelmetProvider>
       <StylesProvider injectFirst>
         <GlobalStyles />
+        <Global
+          styles={css`
+            button:focus {
+              outline: none !important;
+            }
+          `}
+        />
         <App />
       </StylesProvider>
     </HelmetProvider>
