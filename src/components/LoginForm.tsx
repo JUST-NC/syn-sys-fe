@@ -23,8 +23,6 @@ const FormTextField = styled(TextField)(() => [
   `,
 ]);
 
-const FormButton = tw(Button)`py-5 px-20 text-lg text-white rounded-full i-bg-default`;
-
 // 这里要注意加上 AnySchema 类型，不然 TS 没法正确推导（其实现在也不是正确推导）
 const schema: Yup.AnySchema = Yup.object().shape({
   account: Yup.string().required('你怎么可以不填账号呢？！'),
