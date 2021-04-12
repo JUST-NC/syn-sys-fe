@@ -11,11 +11,16 @@ import { ABOUT_PAGE } from '../routes';
 const Home: React.FC = () => {
   return (
     <Box component={Div100vh} tw={'px-4 py-8 bg-gray-50'}>
-      <Box tw={'mb-5'}>
+      <Box tw={'mb-8'}>
         <InfoCard />
       </Box>
       <Box>
-        <MenuCard name={'请假申请'} icon={RiSuitcase2Fill} to={ABOUT_PAGE.path} />
+        <MenuCard
+          name={'请假申请'}
+          comment={'信息'}
+          icon={RiSuitcase2Fill}
+          to={ABOUT_PAGE.path}
+        />
       </Box>
     </Box>
   );

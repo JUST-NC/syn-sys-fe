@@ -31,17 +31,7 @@ const InfoCard: React.FC = () => {
       <CardContent tw={'flex-grow'}>
         <Typography
           variant={'h5'}
-          tw={'font-sans font-black'}
-          css={`
-            &::after {
-              content: '';
-              display: block;
-              position: absolute;
-              width: 20%;
-              height: 3px;
-              background-color: currentColor;
-            }
-          `}
+          tw={'font-sans font-black after:(content block w-1/4 height[3px] bg-current)'}
         >
           Hi, {userStore.basic?.username ?? 'Unknown'}
         </Typography>
