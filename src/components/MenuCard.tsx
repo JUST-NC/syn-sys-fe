@@ -66,16 +66,23 @@ const MenuCard: React.FC<MenuCardProps> = (props) => {
 
             z-index: -1;
             min-height: 12vh;
-            --color-1: ${theme`colors.yellow.400`};
-            --color-2: ${theme`colors.white`};
 
             ${disabled &&
             css`
-              background: repeating-linear-gradient(45deg, var(--color-1), var(--color-1) 10px, var(--color-2) 10px, var(--color-2) 20px);
+              --color-1: ${theme`colors.gray.200`};
+              --color-2: ${theme`colors.white`};
+
+              background: repeating-linear-gradient(
+                45deg,
+                var(--color-1),
+                var(--color-1) 10px,
+                var(--color-2) 10px,
+                var(--color-2) 20px
+              );
 
               &::after {
                 ${tw`content block absolute w-full h-4/5 left-0 rounded-xl bg-gray-50`};
-
+              }
             `}
           `}
         >
