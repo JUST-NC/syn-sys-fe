@@ -28,6 +28,7 @@
     "react-dom": "^17.0.1",
     "react-final-form": "^6.5.2",
     "react-helmet-async": "^1.0.9",
+    "react-icons": "^4.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "rxjs": "^6.6.6",
@@ -94,5 +95,6 @@
     "twin": {
       "preset": "emotion"
     }
-  }
+  },
+  "proxy": "http://172.27.144.1:4523/mock/366504"
 }

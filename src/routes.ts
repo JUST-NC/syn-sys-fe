@@ -37,7 +37,7 @@ const ABOUT_PAGE: RouteModel = {
 const HOME_PAGE: RouteModel = {
   path: '/',
   Component: Home,
-  auth: true,
+  // auth: true,
   exact: true,
 };
 
