@@ -3,7 +3,7 @@ import { LoginForm } from '../components/LoginForm';
 import { Link, Paper, Typography } from '@material-ui/core';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { HOME_PAGE } from '../routes';
+import { RESET_PASSWORD_PAGE } from '../routes';
 import tw from 'twin.macro';
 import Div100vh from 'react-div-100vh';
 
@@ -35,7 +35,7 @@ const Login: React.FC = () => {
             tw={'text-gray-400'}
             color={'initial'}
             component={RouterLink}
-            to={HOME_PAGE.path}
+            to={RESET_PASSWORD_PAGE.path}
           >
             忘记密码？
           </Link>
