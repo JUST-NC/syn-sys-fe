@@ -80,8 +80,9 @@ const MenuCard: React.FC<MenuCardProps> = (props) => {
                 var(--color-2) 20px
               );
 
+              // 遮罩
               &::after {
-                ${tw`content block absolute w-full h-4/5 left-0 rounded-xl bg-gray-50`};
+                ${tw`content block absolute w-full h-4/5 left-0 rounded-xl bg-white`};
               }
             `}
           `}
