@@ -25,8 +25,8 @@ const InfoCard: React.FC = () => {
   //备选：#B2FEFA
   return (
     <BasicCard
-      tw={'flex-col min-h-1/4-screen bg-gradient-to-br'}
-      css={'--tw-gradient-stops: #dbfffd, #acb6e5; color: #675675'}
+      tw={'flex-col min-h-1/4-screen bg-gradient-to-br i-color'}
+      css={'--tw-gradient-stops: #dbfffd, #acb6e5;'}
     >
       <CardContent tw={'flex-grow'}>
         <Typography

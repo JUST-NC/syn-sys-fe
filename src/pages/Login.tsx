@@ -21,7 +21,7 @@ const Login: React.FC = () => {
           <Typography tw={'text-gray-400'} variant={'h6'} gutterBottom={true}>
             江苏科技大学
           </Typography>
-          <Typography tw={'text-gray-800'} variant={'h3'} gutterBottom={true}>
+          <Typography tw={'i-color'} variant={'h3'} gutterBottom={true}>
             欢迎回来！
           </Typography>
         </Block>

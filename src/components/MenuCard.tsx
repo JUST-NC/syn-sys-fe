@@ -91,7 +91,7 @@ const MenuCard: React.FC<MenuCardProps> = (props) => {
           <CardMedia css={[tw`mr-4 z-10`, disabled && tw`opacity-50`]}>
             <props.icon
               size={props.iconSize ?? '2rem'}
-              color={props.iconColor ?? '#675675'}
+              color={props.iconColor ?? theme`mainColor`}
             />
           </CardMedia>
           <CardContent

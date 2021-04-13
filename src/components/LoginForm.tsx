@@ -17,7 +17,7 @@ const FormTextField = styled(TextField)(() => [
   tw`mb-7 h-16`,
   css`
     .MuiFilledInput-underline:before {
-      ${tw`h-0.5 i-bg-default`}
+      ${tw`h-0.5 i-bg`}
       border-bottom: unset;
     }
   `,
@@ -61,7 +61,7 @@ const LoginForm: React.FC = () => {
             autoComplete={'current-password'}
           />
           <Button
-            tw={'py-5 px-20 text-lg text-white rounded-full i-bg-default'}
+            tw={'py-5 px-20 text-lg text-white rounded-full i-bg'}
             disableElevation={true}
             variant={'contained'}
             type={'submit'}

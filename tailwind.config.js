@@ -2,6 +2,7 @@ module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   darkMode: 'class', // or 'media' or 'class'
   theme: {
+    mainColor: '#675675',
     minHeight: {
       '1/4': '25%',
       '1/2': '50%',
@@ -16,12 +17,14 @@ module.exports = {
     extend: {},
   },
   plugins: [
-    ({ addUtilities }) => {
+    ({ addUtilities, theme }) => {
       addUtilities(
         {
-          '.i-bg-default': {
-            background:
-              'linear-gradient(130deg, #ff7a18, #af002d 41.07%, #319197 76.05%)',
+          '.i-bg': {
+            background: 'linear-gradient(to bottom right, #dbfffd, #acb6e5)',
+          },
+          '.i-color': {
+            color: theme('mainColor'),
           },
         },
         ['responsive', 'hover'],
