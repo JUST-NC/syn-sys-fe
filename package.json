@@ -13,9 +13,11 @@
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@material-ui/pickers": "^3.2.10",
     "axios": "^0.21.1",
+    "crypto-js": "^4.0.0",
     "date-fns": "^2.16.1",
     "final-form": "^4.20.1",
     "framer-motion": "^4.0.2",
+    "http-proxy-middleware": "^1.1.0",
     "localforage": "^1.9.0",
     "lodash": "^4.17.20",
     "mobx": "^6.1.8",
@@ -63,6 +65,7 @@
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.3",
     "@testing-library/user-event": "^12.6.0",
+    "@types/crypto-js": "^4.0.1",
     "@types/jest": "^26.0.20",
     "@types/lodash": "^4.14.168",
     "@types/node": "^12.19.14",
@@ -94,5 +97,6 @@
     "twin": {
       "preset": "emotion"
     }
-  }
+  },
+  "proxy": "http://172.22.48.1:4523/mock/371924"
 }

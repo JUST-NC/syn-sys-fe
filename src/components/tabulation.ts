@@ -1,0 +1,3 @@
+const Tabulation = {};
+
+export { Tabulation };

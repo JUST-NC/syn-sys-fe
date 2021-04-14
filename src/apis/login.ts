@@ -1,27 +1,24 @@
 import { utils } from './utils';
 import { BasicUser } from '../models/user-model';
-import localforage from 'localforage';
 import { userStore } from '../stores/user-store';
+import localforage from 'localforage';
 
-export const login = <T>(url: string, data: T) => {
-  //TODO:　AES加密
+const LOGIN = '/dev-api/login';
 
-  utils.post(url, data).then((res) => {
-    console.log(res);
+//登录api
+export const login = <T>(data: T) => {
+  utils.post(LOGIN, data).then((res) => {
+    if (res.data['code'] === 200) {
+      let respData = res.data;
+      let basic: BasicUser = respData['data'];
+      console.log(basic);
+      userStore.setBasic(basic);
 
-    if (res.status === 200) {
-      //写入token
-      localforage
-        .setItem('token', res.data['token'])
-        .then(() => {
-          //TODO: userStore刷新登录状态
-          //TODO: 保存用户信息
-          userStore.setBasic(res.data['basic-user']);
-
-          //TODO: 路由跳转
-          console.log('跳转');
-        })
-        .catch((err) => console.log(err));
+      localforage.setItem('token', respData['token']).then(() => {
+        //TODO: 登录后返回的数据处理
+        console.log(res.data);
+        // window.location.href = '/';
+      });
     }
   });
 };

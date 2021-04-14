@@ -1,8 +1,9 @@
-import { login } from '../apis/login';
 import React from 'react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import localforage from 'localforage';
+import { holiday } from '../apis/holiday';
+import { FlowStatus } from '../enum/FlowStatus';
 
 const LOGIN_URL = '/login';
 
@@ -31,11 +32,10 @@ afterEach(() => {
 // Disable API mocking after the tests are done.
 afterAll(() => server.close());
 
-test('preparations for the action of login ', () => {
-  login(LOGIN_URL, user_info);
-  expect(localforage.getItem('token')).toBe('temp_token');
-});
-
 test('tests for changing router', () => {
   console.log(location.pathname);
+});
+
+test('test for holiday', () => {
+  holiday.get({ page: 1, page_size: 10, flow_status: FlowStatus.applied });
 });

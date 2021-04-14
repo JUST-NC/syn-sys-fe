@@ -5,6 +5,10 @@ import Button from '@material-ui/core/Button';
 import * as Yup from 'yup';
 import tw, { css } from 'twin.macro';
 import styled from '@emotion/styled';
+import { login } from '../apis/login';
+import axios from 'axios';
+import { holiday } from '../apis/holiday';
+import { FlowStatus } from '../enum/FlowStatus';
 
 interface LoginFormData {
   // 账号
@@ -39,7 +43,8 @@ const validate = makeValidate(schema);
 const LoginForm: React.FC = () => {
   // TODO: 完成提交接口设计
   const onSubmit = async (data: LoginFormData) => {
-    console.log(data);
+    login(data);
+    holiday.get({ page: 1, page_size: 10, flow_status: FlowStatus.applied });
   };
 
   return (
