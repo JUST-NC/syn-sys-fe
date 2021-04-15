@@ -3,6 +3,7 @@ import { Home } from './pages/Home';
 import { About } from './pages/About';
 import { NotFound } from './pages/NotFound';
 import { Login } from './pages/Login';
+import { ResetPassword } from './pages/ResetPassword';
 
 export interface RouteModel {
   // 路由路径
@@ -21,12 +22,16 @@ export interface RouteModel {
 /**
  * 路由表
  *
- * Login 在 App.tsx 中配置
+ *!!! 完成配置后别忘了加到下方的数组、导出模块中
  */
-
 const LOGIN_PAGE: RouteModel = {
   path: '/login',
   Component: Login,
+};
+
+const RESET_PASSWORD_PAGE: RouteModel = {
+  path: '/reset_password',
+  Component: ResetPassword,
 };
 
 const ABOUT_PAGE: RouteModel = {
@@ -46,6 +51,12 @@ const NOT_FOUND_PAGE: RouteModel = {
   Component: NotFound,
 };
 
-const route: RouteModel[] = [LOGIN_PAGE, ABOUT_PAGE, HOME_PAGE, NOT_FOUND_PAGE];
+const route: RouteModel[] = [
+  LOGIN_PAGE,
+  RESET_PASSWORD_PAGE,
+  ABOUT_PAGE,
+  HOME_PAGE,
+  NOT_FOUND_PAGE,
+];
 
-export { LOGIN_PAGE, ABOUT_PAGE, HOME_PAGE, NOT_FOUND_PAGE, route };
+export { LOGIN_PAGE, RESET_PASSWORD_PAGE, ABOUT_PAGE, HOME_PAGE, NOT_FOUND_PAGE, route };

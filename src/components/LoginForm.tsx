@@ -1,10 +1,10 @@
 import React from 'react';
 import { Form } from 'react-final-form';
-import { makeValidate, TextField } from 'mui-rff';
-import Button from '@material-ui/core/Button';
+import { makeValidate } from 'mui-rff';
 import * as Yup from 'yup';
-import tw, { css } from 'twin.macro';
-import styled from '@emotion/styled';
+import { FormTextField } from './FormTextField';
+import { FormButton } from './FormButton';
+import 'twin.macro';
 
 interface LoginFormData {
   // 账号
@@ -12,16 +12,6 @@ interface LoginFormData {
   // 密码
   password: string;
 }
-
-const FormTextField = styled(TextField)(() => [
-  tw`mb-7 h-16`,
-  css`
-    .MuiFilledInput-underline:before {
-      ${tw`h-0.5 i-bg`}
-      border-bottom: unset;
-    }
-  `,
-]);
 
 // 这里要注意加上 AnySchema 类型，不然 TS 没法正确推导（其实现在也不是正确推导）
 const schema: Yup.AnySchema = Yup.object().shape({
@@ -45,29 +35,21 @@ const LoginForm: React.FC = () => {
       {({ handleSubmit }) => (
         <form tw={'flex flex-col justify-center items-center'} onSubmit={handleSubmit}>
           <FormTextField
-            margin={'normal'}
-            variant={'filled'}
             label={'账号'}
             name={'account'}
             required={true}
             autoComplete={'username'}
           />
           <FormTextField
-            variant={'filled'}
             label={'密码'}
             name={'password'}
             required={true}
             type={'password'}
             autoComplete={'current-password'}
           />
-          <Button
-            tw={'py-5 px-20 text-lg text-white rounded-full i-bg'}
-            disableElevation={true}
-            variant={'contained'}
-            type={'submit'}
-          >
+          <FormButton type={'submit'} size={'medium'}>
             登录
-          </Button>
+          </FormButton>
         </form>
       )}
     </Form>
