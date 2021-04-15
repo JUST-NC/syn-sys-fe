@@ -4,6 +4,7 @@ import { makeValidate } from 'mui-rff';
 import * as Yup from 'yup';
 import { FormTextField } from './FormTextField';
 import { FormButton } from './FormButton';
+import 'twin.macro';
 
 interface LoginFormData {
   // 账号
@@ -46,7 +47,9 @@ const LoginForm: React.FC = () => {
             type={'password'}
             autoComplete={'current-password'}
           />
-          <FormButton type={'submit'}>登录</FormButton>
+          <FormButton type={'submit'} size={'medium'}>
+            登录
+          </FormButton>
         </form>
       )}
     </Form>
