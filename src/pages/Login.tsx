@@ -7,7 +7,11 @@ import { RESET_PASSWORD_PAGE } from '../routes';
 import tw from 'twin.macro';
 import Div100vh from 'react-div-100vh';
 
-const Block = tw.div`mb-20`;
+/**
+ * TODO: Rewrite FormTextField's style
+ */
+
+const Block = tw.div`mb-16`;
 
 const Login: React.FC = () => {
   return (
