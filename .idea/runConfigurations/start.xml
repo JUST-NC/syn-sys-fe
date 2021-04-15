@@ -6,7 +6,6 @@
       <script value="start" />
     </scripts>
     <node-interpreter value="wsl://Debian@/home/iskyex/n/bin/node" />
-    <package-manager value="npm" />
     <envs />
     <method v="2" />
   </configuration>

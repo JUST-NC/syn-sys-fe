@@ -12,6 +12,8 @@ import { ActionType } from '../utils/action-type';
 import { StepBox } from '../components/ResetPassword/StepBox';
 import { Paper } from '@material-ui/core';
 import Div100vh from 'react-div-100vh';
+import { Helmet } from 'react-helmet-async';
+import Box from '@material-ui/core/Box';
 
 // 步骤数据存储
 export interface StepStore {
@@ -31,7 +33,7 @@ interface StepIconBtnProps extends IconButtonProps {
 }
 
 // 总步数
-const STEPS = 3;
+const STEPS = StepBox.length;
 // 倒数第二步（从右数第二步)
 const STEP_R_2 = STEPS - 1;
 
@@ -82,37 +84,48 @@ const ResetPassword = observer(() => {
   const handleBack = () => stepStore.setStep((prev) => prev - 1);
   // 下一步
   const handleNext = () => stepStore.setStep((prev) => prev + 1);
-
+  // 当前要显示的步骤组件
   const Step = StepBox[stepStore.step];
 
   return (
-    <Paper elevation={0} component={Div100vh} tw={'py-20 px-10'}>
-      <Step />
-      <MobileStepper
-        steps={STEPS}
-        activeStep={stepStore.step}
-        tw={'p-8'}
-        css={css`
-          .MuiMobileStepper-dotActive {
-            ${tw`i-bg`}
-          }
-        `}
-        backButton={
-          <StepIconBtn
-            onClick={handleBack}
-            disabled={stepStore.backDisable}
-            Icon={MdNavigateBefore}
+    <>
+      <Helmet>
+        <title>重置密码</title>
+      </Helmet>
+
+      <Paper elevation={0} component={Div100vh} tw={'py-20 px-10 flex flex-col'}>
+        <Box tw={'flex-grow mb-10'}>
+          <Step handleBack={handleBack} handleNext={handleNext} />
+        </Box>
+        <Box tw={'-mb-20 -mx-10'}>
+          <MobileStepper
+            position={'static'}
+            steps={STEPS}
+            activeStep={stepStore.step}
+            tw={'p-8'}
+            css={css`
+              .MuiMobileStepper-dotActive {
+                ${tw`i-bg`}
+              }
+            `}
+            backButton={
+              <StepIconBtn
+                onClick={handleBack}
+                disabled={stepStore.backDisable}
+                Icon={MdNavigateBefore}
+              />
+            }
+            nextButton={
+              <StepIconBtn
+                onClick={handleNext}
+                disabled={stepStore.nextDisable}
+                Icon={MdNavigateNext}
+              />
+            }
           />
-        }
-        nextButton={
-          <StepIconBtn
-            onClick={handleNext}
-            disabled={stepStore.nextDisable}
-            Icon={MdNavigateNext}
-          />
-        }
-      />
-    </Paper>
+        </Box>
+      </Paper>
+    </>
   );
 });
 
