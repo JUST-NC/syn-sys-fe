@@ -5,7 +5,7 @@ import { InfoCard } from '../components/InfoCard';
 import 'twin.macro';
 import { MenuCard } from '../components/MenuCard';
 import { RiSuitcase2Fill } from 'react-icons/all';
-import { ABOUT_PAGE } from '../routes';
+import { LEAVE_APPLICATION_PAGE } from '../routes';
 
 // --tw-gradient-stops: #aba0eb, #fbc7d4
 const Home: React.FC = () => {
@@ -19,7 +19,7 @@ const Home: React.FC = () => {
           name={'请假申请'}
           comment={'信息'}
           icon={RiSuitcase2Fill}
-          to={ABOUT_PAGE.path}
+          to={LEAVE_APPLICATION_PAGE.path}
         />
       </Box>
     </Box>
