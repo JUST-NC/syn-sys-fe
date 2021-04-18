@@ -1,68 +1,81 @@
 import React from 'react';
-import { Paper } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
 import Div100vh from 'react-div-100vh';
 import { Helmet } from 'react-helmet-async';
 import { Form } from 'react-final-form';
 import { observer } from 'mobx-react-lite';
 import { LeaveEnum, LeaveModel } from '../models/leave-model';
-import { TextField } from 'mui-rff/dist/TextField';
-import { Radios } from 'mui-rff/dist/Radios';
-import DateFnsUtils from '@date-io/date-fns';
-import { KeyboardDatePicker } from 'mui-rff/dist/KeyboardDatePicker';
+import { TextField } from 'mui-rff';
 import { action, computed, observable } from 'mobx';
 import { ActionType } from '../utils/action-type';
+import 'twin.macro';
+import Button from '@material-ui/core/Button';
+import { FormDateRangePicker } from '../components/FormDateRangePicker';
+import { OnChange } from 'react-final-form-listeners';
+import { add, differenceInDays, format, parseISO } from 'date-fns';
+import { constant } from '../utils/constant';
+import { FormRadioGroup } from '../components/FormRadioGroup';
+import { css } from '@emotion/react';
 
-export interface LeaveStore {
-  data: LeaveModel;
-  setData: ActionType<LeaveModel>;
+interface LeaveFormModel extends Omit<LeaveModel, 'num'> {}
+
+export interface LeaveStore<T extends LeaveFormModel> {
+  data: T;
+  setData: ActionType<T>;
+  setBeginDate: ActionType<string>;
   minDate: Date;
   maxDate: Date;
   num: number;
 }
 
 const YES_NO = [
-  { label: '是', value: 1 },
-  { label: '否', value: 0 },
+  { value: 'true', label: '是' },
+  { value: 'false', label: '否' },
 ];
 
-const leaveStore = observable<LeaveStore>(
+const leaveStore = observable<LeaveStore<LeaveFormModel>>(
   {
     data: {
       account: '',
       phone: '',
       reason: '',
-      needInOut: 1,
-      isSick: 1,
-      canGoClass: 1,
+      needInOut: true,
+      isSick: false,
+      canGoClass: false,
       beginDate: '',
       endDate: '',
     },
-    setData(fn: (prev: LeaveModel) => LeaveModel) {
+    setData(fn: (prev: LeaveFormModel) => LeaveFormModel) {
       this.data = fn(this.data);
     },
-    get maxDate() {
-      return this.minDate.setDate(this.minDate + 30);
+    setBeginDate(fn: (prev: string) => string) {
+      this.data.beginDate = fn(this.data.beginDate);
     },
     get minDate() {
-      return new Date();
+      // 这边的 parseISO 依赖于 constant.DATE_FORMAT 的 yyyy-MM-dd
+      return parseISO(this.data.beginDate ?? new Date());
+    },
+    get maxDate() {
+      return add(this.minDate, {
+        days: 30,
+      });
     },
     get num() {
-      return (
-        new Date(this.data.endDate).getDate() - new Date(this.data.beginDate).getDate()
-      );
+      return differenceInDays(this.minDate, parseISO(this.data.endDate));
     },
   },
   {
     data: observable.deep,
     setData: action,
-    minDate: computed,
     maxDate: computed,
     num: computed,
   },
 );
 
 const LeaveApplication = observer(() => {
-  const onSubmit = () => {};
+  const onSubmit = (values: LeaveModel) => {
+    console.log(values);
+  };
 
   return (
     <>
@@ -81,10 +94,53 @@ const LeaveApplication = observer(() => {
                 disabled={true}
                 required={true}
               />
+
               <TextField
+                css={css`
+                  .MuiInputLabel-shrink {
+                    transform: translate(0, 1.5px) scale(1);
+                  }
+                `}
                 label={'电话号码'}
                 name={LeaveEnum.PHONE}
                 autoComplete={'tel-national'}
+                required={true}
+                InputLabelProps={{ disableAnimation: true, shrink: true }}
+              />
+
+              <FormRadioGroup
+                name={LeaveEnum.NEED_IN_OUT}
+                label={'是否进出校门'}
+                options={YES_NO}
+                required={true}
+              />
+
+              <FormRadioGroup
+                name={LeaveEnum.IS_SICK}
+                label={'是否生病'}
+                options={YES_NO}
+                required={true}
+              />
+
+              <FormRadioGroup
+                name={LeaveEnum.CAN_GO_CLASS}
+                label={'是否可以上课'}
+                options={YES_NO}
+                required={true}
+              />
+
+              <FormDateRangePicker
+                label={'请假时间'}
+                beginDateProps={{ placeholder: '开始日期', name: LeaveEnum.BEGIN_DATE }}
+                endDateProps={{
+                  placeholder: '结束日期',
+                  name: LeaveEnum.END_DATE,
+                  minDate: leaveStore.minDate,
+                  maxDate: leaveStore.maxDate,
+                }}
+                animateYearScrolling={true}
+                showTodayButton={true}
+                disablePast={true}
                 required={true}
               />
               <TextField
@@ -94,39 +150,16 @@ const LeaveApplication = observer(() => {
                 rows={4}
                 required={true}
               />
-              <Radios
-                label={'是否进出校门'}
-                name={LeaveEnum.NEED_IN_OUT}
-                data={YES_NO}
-                required={true}
-              />
-              <Radios
-                label={'是否生病'}
-                name={LeaveEnum.IS_SICK}
-                data={YES_NO}
-                required={true}
-              />
-              <Radios
-                label={'是否可以正常上课'}
-                name={LeaveEnum.CAN_GO_CLASS}
-                data={YES_NO}
-                required={true}
-              />
-              <KeyboardDatePicker
-                label={'开始日期'}
-                name={LeaveEnum.BEGIN_DATE}
-                dateFunsUtils={DateFnsUtils}
-                autoOk={true}
-                required={true}
-              />
-              <KeyboardDatePicker
-                label={'终止日期'}
-                name={LeaveEnum.END_DATE}
-                dateFunsUtils={DateFnsUtils}
-                autoOk={true}
-                required={true}
-              />
-              <TextField label={'请假天数'} name={LeaveEnum.NUM} />
+
+              <Button type={'submit'} variant={'contained'}>
+                提交
+              </Button>
+
+              <OnChange name={LeaveEnum.BEGIN_DATE}>
+                {(value: Date) => {
+                  leaveStore.setBeginDate(() => format(value, constant.DATE_FORMAT));
+                }}
+              </OnChange>
             </form>
           )}
         </Form>
