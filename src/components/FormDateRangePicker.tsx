@@ -61,6 +61,8 @@ const StyledDatePicker = observer<DatePickerProps>(({ ...props }) => (
  * 进行了中文本地化，为了方便所以有一部分是写死在里面的……
  *
  * 如果想修改组件的话，建议看一下 {@link https://material-ui-pickers.dev/}
+ *
+ * FIXME: DatePicker 会报一个 warning 暂时没解决
  */
 const FormDateRangePicker = observer<FormDateRangePickerProps>((props) => {
   let {

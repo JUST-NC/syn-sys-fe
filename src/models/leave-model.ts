@@ -10,16 +10,14 @@ export interface LeaveModel extends Pick<BasicUser, 'account' | 'phone'> {
   beginDate: string;
   // 结束时间
   endDate: string;
-  // 是否都使用 1/0 表示
   // 是否需要进出校门
-  needInOut: number;
+  needInOut: boolean;
   // 是否生病
-  isSick: number;
+  isSick: boolean;
   // 是否可以正常上课
-  canGoClass: number;
-  // 自动生成
+  canGoClass: boolean;
   // 1~30 天，14天及以上只记录，需要到线下请假
-  num?: number;
+  num: number;
 }
 
 /**
