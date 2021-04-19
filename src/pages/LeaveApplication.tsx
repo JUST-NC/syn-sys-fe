@@ -14,7 +14,7 @@ import { FormDateRangePicker } from '../components/FormDateRangePicker';
 import { OnChange } from 'react-final-form-listeners';
 import { add, differenceInDays, format, parseISO } from 'date-fns';
 import { constant } from '../utils/constant';
-import { FormRadioGroup } from '../components/FormRadioGroup';
+import { FormToggleGroup } from '../components/FormToggleGroup';
 import { css } from '@emotion/react';
 
 interface LeaveFormModel extends Omit<LeaveModel, 'num'> {}
@@ -108,24 +108,24 @@ const LeaveApplication = observer(() => {
                 InputLabelProps={{ disableAnimation: true, shrink: true }}
               />
 
-              <FormRadioGroup
+              <FormToggleGroup
                 name={LeaveEnum.NEED_IN_OUT}
                 label={'是否进出校门'}
-                options={YES_NO}
+                toggles={YES_NO}
                 required={true}
               />
 
-              <FormRadioGroup
+              <FormToggleGroup
                 name={LeaveEnum.IS_SICK}
                 label={'是否生病'}
-                options={YES_NO}
+                toggles={YES_NO}
                 required={true}
               />
 
-              <FormRadioGroup
+              <FormToggleGroup
                 name={LeaveEnum.CAN_GO_CLASS}
                 label={'是否可以上课'}
-                options={YES_NO}
+                toggles={YES_NO}
                 required={true}
               />
 
