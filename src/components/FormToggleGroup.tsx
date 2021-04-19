@@ -96,58 +96,63 @@ const FormToggleGroup: React.FC<FormToggleGroupProps> = (props) => {
   const isError = showError(field);
 
   return (
-    <>
-      <FormControl required={required} error={isError} {...formControlProps}>
-        <FormLabel {...formLabelProps}>{label}</FormLabel>
-        <Field name={name}>
-          {({ input: { name, value, onChange } }) => (
-            <ToggleButtonGroup
-              tw={'mt-3'}
-              exclusive={exclusive}
-              value={value}
-              onChange={onChange}
-              {...toggleButtonGroupProps}
-            >
-              {toggles.map((option, i) => (
-                <ToggleButton
-                  key={i}
-                  value={option.value}
-                  name={name}
-                  disabled={option.disabled}
-                  disableRipple={true}
-                  css={css`
-                    // 带 padding 选项，不带 padding 主要是方便写圆形的组件
-                    ${withPadding && tw`py-1 px-8`}
-                    ${tw`leading-4 (rounded-full border-solid border-gray-200 border-2)! mr-4 text-gray-800 transition-colors duration-75 ease-linear`}
-                      // 选中后样式
-                    &.Mui-selected {
-                      ${tw`text-gray-200 (bg-gray-800 border-transparent )!`}
-                    }
+    <FormControl
+      tw={'mb-8 flex pb-2 border-b-2 border-gray-100 border-solid'}
+      required={required}
+      error={isError}
+      {...formControlProps}
+    >
+      <FormLabel tw={'text-gray-500'} {...formLabelProps}>
+        {label}
+      </FormLabel>
+      <Field name={name}>
+        {({ input: { name, value, onChange } }) => (
+          <ToggleButtonGroup
+            tw={'mt-6'}
+            exclusive={exclusive}
+            value={value}
+            onChange={onChange}
+            {...toggleButtonGroupProps}
+          >
+            {toggles.map((option, i) => (
+              <ToggleButton
+                key={i}
+                value={option.value}
+                name={name}
+                disabled={option.disabled}
+                disableRipple={true}
+                css={css`
+                  // 带 padding 选项，不带 padding 主要是方便写圆形的组件
+                  ${withPadding && tw`py-2 px-10`}
+                  ${tw`leading-4 (rounded-full border-solid border-gray-200 border)! mr-4 text-gray-500 transition-colors duration-75 ease-linear`}
+                    // 选中后样式
+                  &.Mui-selected {
+                    ${tw`text-gray-200 (bg-gray-800 border-transparent)!`}
+                  }
 
-                    // 穿透 label，使 label 部分可点击
-                    .MuiToggleButton-label {
-                      ${tw`pointer-events-none`}
-                    }
-                  `}
-                >
-                  {value === option.value ? (
-                    <Wrapper Node={SelectedNode}>{option.label}</Wrapper>
-                  ) : (
-                    <Wrapper Node={UnselectedNode}>{option.label}</Wrapper>
-                  )}
-                </ToggleButton>
-              ))}
-            </ToggleButtonGroup>
-          )}
-        </Field>
-        <ErrorMessage
-          showError={isError}
-          meta={field.meta}
-          formHelperTextProps={formHelperTextProps}
-          helperText={helperText}
-        />
-      </FormControl>
-    </>
+                  // 穿透 label，使 label 部分可点击
+                  .MuiToggleButton-label {
+                    ${tw`pointer-events-none`}
+                  }
+                `}
+              >
+                {value === option.value ? (
+                  <Wrapper Node={SelectedNode}>{option.label}</Wrapper>
+                ) : (
+                  <Wrapper Node={UnselectedNode}>{option.label}</Wrapper>
+                )}
+              </ToggleButton>
+            ))}
+          </ToggleButtonGroup>
+        )}
+      </Field>
+      <ErrorMessage
+        showError={isError}
+        meta={field.meta}
+        formHelperTextProps={formHelperTextProps}
+        helperText={helperText}
+      />
+    </FormControl>
   );
 };
 

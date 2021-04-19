@@ -6,7 +6,7 @@ const FormButton: React.FC<ButtonProps> = ({ size, ...props }) => (
   <Button
     tw={'text-lg text-white rounded-full i-bg'}
     css={css`
-      ${size === 'small' && tw`py-2 px-8`} ${size === 'medium' && tw`py-5 px-20`}
+      ${size === 'small' && tw`py-2 px-10`} ${size === 'medium' && tw`py-5 px-20`}
     `}
     disableElevation={true}
     variant={'contained'}

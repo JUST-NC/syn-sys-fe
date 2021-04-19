@@ -5,17 +5,16 @@ import { Helmet } from 'react-helmet-async';
 import { Form } from 'react-final-form';
 import { observer } from 'mobx-react-lite';
 import { LeaveEnum, LeaveModel } from '../models/leave-model';
-import { TextField } from 'mui-rff';
 import { action, computed, observable } from 'mobx';
 import { ActionType } from '../utils/action-type';
 import 'twin.macro';
-import Button from '@material-ui/core/Button';
 import { FormDateRangePicker } from '../components/FormDateRangePicker';
 import { OnChange } from 'react-final-form-listeners';
 import { add, differenceInDays, format, parseISO } from 'date-fns';
 import { constant } from '../utils/constant';
 import { FormToggleGroup } from '../components/FormToggleGroup';
-import { css } from '@emotion/react';
+import { FormInput } from '../components/FormInput';
+import { FormButton } from '../components/FormButton';
 
 interface LeaveFormModel extends Omit<LeaveModel, 'num'> {}
 
@@ -23,8 +22,10 @@ export interface LeaveStore<T extends LeaveFormModel> {
   data: T;
   setData: ActionType<T>;
   setBeginDate: ActionType<string>;
-  minDate: Date;
-  maxDate: Date;
+  today: Date;
+  beginMaxDate: Date;
+  endMinDate: Date;
+  endMaxDate: Date;
   num: number;
 }
 
@@ -51,11 +52,19 @@ const leaveStore = observable<LeaveStore<LeaveFormModel>>(
     setBeginDate(fn: (prev: string) => string) {
       this.data.beginDate = fn(this.data.beginDate);
     },
-    get minDate() {
-      // 这边的 parseISO 依赖于 constant.DATE_FORMAT 的 yyyy-MM-dd
-      return parseISO(this.data.beginDate ?? new Date());
+    get today() {
+      return new Date();
     },
-    get maxDate() {
+    get beginMaxDate() {
+      return add(this.today, {
+        days: 30,
+      });
+    },
+    get endMinDate() {
+      // 这边的 parseISO 依赖于 constant.DATE_FORMAT 的 yyyy-MM-dd
+      return this.data.beginDate ? parseISO(this.data.beginDate) : this.today;
+    },
+    get endMaxDate() {
       return add(this.minDate, {
         days: 30,
       });
@@ -67,7 +76,10 @@ const leaveStore = observable<LeaveStore<LeaveFormModel>>(
   {
     data: observable.deep,
     setData: action,
-    maxDate: computed,
+    today: computed,
+    beginMaxDate: computed,
+    endMinDate: computed,
+    endMaxDate: computed,
     num: computed,
   },
 );
@@ -87,7 +99,7 @@ const LeaveApplication = observer(() => {
         <Form onSubmit={onSubmit} initialValues={leaveStore.data}>
           {({ handleSubmit }) => (
             <form onSubmit={handleSubmit}>
-              <TextField
+              <FormInput
                 label={'账号'}
                 name={LeaveEnum.ACCOUNT}
                 autoComplete={'username'}
@@ -95,22 +107,16 @@ const LeaveApplication = observer(() => {
                 required={true}
               />
 
-              <TextField
-                css={css`
-                  .MuiInputLabel-shrink {
-                    transform: translate(0, 1.5px) scale(1);
-                  }
-                `}
+              <FormInput
                 label={'电话号码'}
                 name={LeaveEnum.PHONE}
                 autoComplete={'tel-national'}
                 required={true}
-                InputLabelProps={{ disableAnimation: true, shrink: true }}
               />
 
               <FormToggleGroup
                 name={LeaveEnum.NEED_IN_OUT}
-                label={'是否进出校门'}
+                label={'是否需要进出校门'}
                 toggles={YES_NO}
                 required={true}
               />
@@ -131,29 +137,42 @@ const LeaveApplication = observer(() => {
 
               <FormDateRangePicker
                 label={'请假时间'}
-                beginDateProps={{ placeholder: '开始日期', name: LeaveEnum.BEGIN_DATE }}
+                beginDateProps={{
+                  placeholder: '开始日期',
+                  name: LeaveEnum.BEGIN_DATE,
+                  maxDate: leaveStore.beginMaxDate,
+                }}
                 endDateProps={{
                   placeholder: '结束日期',
                   name: LeaveEnum.END_DATE,
-                  minDate: leaveStore.minDate,
-                  maxDate: leaveStore.maxDate,
+                  minDate: leaveStore.endMinDate,
+                  maxDate: leaveStore.endMaxDate,
                 }}
                 animateYearScrolling={true}
                 showTodayButton={true}
                 disablePast={true}
                 required={true}
               />
-              <TextField
+
+              <FormInput
                 label={'请假原因'}
                 name={LeaveEnum.REASON}
                 multiline={true}
                 rows={4}
                 required={true}
+                tw={'mb-20'}
               />
 
-              <Button type={'submit'} variant={'contained'}>
-                提交
-              </Button>
+              <Paper
+                elevation={0}
+                tw={
+                  'fixed flex justify-center items-center w-screen bottom-0 left-0 py-6 bg-transparent bg-gradient-to-b from-transparent to-white'
+                }
+              >
+                <FormButton type={'submit'} size={'small'}>
+                  提交
+                </FormButton>
+              </Paper>
 
               <OnChange name={LeaveEnum.BEGIN_DATE}>
                 {(value: Date) => {

@@ -8,6 +8,9 @@ import { FormLabel, Typography } from '@material-ui/core';
 import 'twin.macro';
 import { constant } from '../utils/constant';
 import { observer } from 'mobx-react-lite';
+import FormControl, { FormControlProps } from '@material-ui/core/FormControl';
+import { css } from '@emotion/react';
+import tw from 'twin.macro';
 
 /**
  * 从属性中排除一些公共值
@@ -30,6 +33,7 @@ export interface FormDateRangePickerProps {
   label: string;
   beginDateProps: DateProps;
   endDateProps: DateProps;
+  formControlProps?: Partial<FormControlProps>;
   format?: string;
   required?: boolean;
   disablePast?: boolean;
@@ -48,6 +52,15 @@ export interface FormDateRangePickerProps {
 const StyledDatePicker = observer<DatePickerProps>(({ ...props }) => (
   <DatePicker
     tw={'w-auto'}
+    css={css`
+      .MuiInput-input {
+        ${tw`text-center`}
+      }
+
+      .MuiInput-formControl {
+        ${tw`before:(border-none!) after:(border-none!)`}
+      }
+    `}
     InputLabelProps={{
       shrink: true,
     }}
@@ -67,9 +80,11 @@ const StyledDatePicker = observer<DatePickerProps>(({ ...props }) => (
 const FormDateRangePicker = observer<FormDateRangePickerProps>((props) => {
   let {
     label,
-    betweenLabel = '至',
     beginDateProps,
     endDateProps,
+    formControlProps,
+    required = false,
+    betweenLabel = '至',
     ...commonProps
   } = props;
 
@@ -83,16 +98,20 @@ const FormDateRangePicker = observer<FormDateRangePickerProps>((props) => {
   };
 
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils} locale={zhCN}>
-      <Box>
-        <FormLabel>{label}</FormLabel>
-        <Box tw={'flex items-center'}>
+    <FormControl
+      tw={'mb-8 flex border-b-2 border-gray-100 border-solid'}
+      required={required}
+      {...formControlProps}
+    >
+      <FormLabel tw={'text-gray-500'}>{label}</FormLabel>
+      <Box tw={'flex items-center mt-4'}>
+        <MuiPickersUtilsProvider utils={DateFnsUtils} locale={zhCN}>
           <StyledDatePicker {...commonProps} {...beginDateProps} />
-          <Typography tw={'inline-block mx-4'}>{betweenLabel}</Typography>
+          <Typography tw={'inline-block mx-4 text-gray-400'}>{betweenLabel}</Typography>
           <StyledDatePicker {...commonProps} {...endDateProps} />
-        </Box>
+        </MuiPickersUtilsProvider>
       </Box>
-    </MuiPickersUtilsProvider>
+    </FormControl>
   );
 });
 
