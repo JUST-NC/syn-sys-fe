@@ -54,7 +54,7 @@ const StyledDatePicker = observer<DatePickerProps>(({ ...props }) => (
     tw={'w-auto'}
     css={css`
       .MuiInput-input {
-        ${tw`text-center`}
+        ${tw`text-center i-color`}
       }
 
       .MuiInput-formControl {
@@ -104,7 +104,7 @@ const FormDateRangePicker = observer<FormDateRangePickerProps>((props) => {
       {...formControlProps}
     >
       <FormLabel tw={'text-gray-500'}>{label}</FormLabel>
-      <Box tw={'flex items-center mt-4'}>
+      <Box tw={'flex items-center pt-8'}>
         <MuiPickersUtilsProvider utils={DateFnsUtils} locale={zhCN}>
           <StyledDatePicker {...commonProps} {...beginDateProps} />
           <Typography tw={'inline-block mx-4 text-gray-400'}>{betweenLabel}</Typography>

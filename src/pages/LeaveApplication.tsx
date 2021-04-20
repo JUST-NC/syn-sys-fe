@@ -1,13 +1,11 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
-import Div100vh from 'react-div-100vh';
 import { Helmet } from 'react-helmet-async';
 import { Form } from 'react-final-form';
 import { observer } from 'mobx-react-lite';
 import { LeaveEnum, LeaveModel } from '../models/leave-model';
 import { action, computed, observable } from 'mobx';
 import { ActionType } from '../utils/action-type';
-import 'twin.macro';
 import { FormDateRangePicker } from '../components/FormDateRangePicker';
 import { OnChange } from 'react-final-form-listeners';
 import { add, differenceInDays, format, parseISO } from 'date-fns';
@@ -15,6 +13,13 @@ import { constant } from '../utils/constant';
 import { FormToggleGroup } from '../components/FormToggleGroup';
 import { FormInput } from '../components/FormInput';
 import { FormButton } from '../components/FormButton';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import IconButton from '@material-ui/core/IconButton';
+import { VscClose } from 'react-icons/vsc';
+import { theme } from 'twin.macro';
+import { Link as RouterLink } from 'react-router-dom';
+import { HOME_PAGE } from '../routes';
 
 interface LeaveFormModel extends Omit<LeaveModel, 'num'> {}
 
@@ -95,7 +100,18 @@ const LeaveApplication = observer(() => {
         <title>请假申请</title>
       </Helmet>
 
-      <Paper elevation={0} component={Div100vh} tw={'py-20 px-10'}>
+      <RouterLink to={HOME_PAGE.path}>
+        <IconButton tw={'fixed -top-4 -right-3 p-4 z-50 bg-gray-300'}>
+          <VscClose size={theme('fontSize.5xl')} color={theme('colors.white')} />
+        </IconButton>
+      </RouterLink>
+
+      <Paper elevation={0} tw={'pb-20 px-10'}>
+        <Box tw={'my-10 flex flex-row justify-between items-center'}>
+          <Typography variant={'h4'} tw={'i-color -ml-px'}>
+            请假申请
+          </Typography>
+        </Box>
         <Form onSubmit={onSubmit} initialValues={leaveStore.data}>
           {({ handleSubmit }) => (
             <form onSubmit={handleSubmit}>
@@ -158,18 +174,17 @@ const LeaveApplication = observer(() => {
                 label={'请假原因'}
                 name={LeaveEnum.REASON}
                 multiline={true}
-                rows={4}
+                rows={5}
                 required={true}
-                tw={'mb-20'}
               />
 
               <Paper
                 elevation={0}
                 tw={
-                  'fixed flex justify-center items-center w-screen bottom-0 left-0 py-6 bg-transparent bg-gradient-to-b from-transparent to-white'
+                  'fixed bottom-0 left-0 flex justify-center items-center w-screen  py-6 bg-transparent bg-gradient-to-b from-transparent to-white z-50'
                 }
               >
-                <FormButton type={'submit'} size={'small'}>
+                <FormButton type={'submit'} size={'medium'}>
                   提交
                 </FormButton>
               </Paper>

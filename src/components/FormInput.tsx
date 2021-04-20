@@ -19,6 +19,9 @@ const FormInput: React.FC<TextFieldProps> = (props) => {
         label + .MuiInput-formControl {
           ${tw`mt-6 before:(border-none!) after:(border-none!)`}
         }
+
+        .MuiInput-input {
+          ${tw`pt-6 (i-color bg-white)!`}
       `}
       InputLabelProps={{ disableAnimation: true, shrink: true }}
       {...props}
