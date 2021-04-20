@@ -23,6 +23,9 @@ module.exports = {
           '.i-bg': {
             background: 'linear-gradient(to bottom right, #dbfffd, #acb6e5)',
           },
+          '.i-bg-color': {
+            backgroundColor: theme('mainColor'),
+          },
           '.i-color': {
             color: theme('mainColor'),
           },
