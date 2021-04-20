@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { Form } from 'react-final-form';
 import { observer } from 'mobx-react-lite';
 import { LeaveEnum, LeaveModel } from '../models/leave-model';
-import { action, computed, observable } from 'mobx';
+import { computed, observable } from 'mobx';
 import { ActionType } from '../utils/action-type';
 import { FormDateRangePicker } from '../components/FormDateRangePicker';
 import { OnChange } from 'react-final-form-listeners';
@@ -20,13 +20,25 @@ import { VscClose } from 'react-icons/vsc';
 import { theme } from 'twin.macro';
 import { Link as RouterLink } from 'react-router-dom';
 import { HOME_PAGE } from '../routes';
+import { str2Bool } from '../utils/bool-string';
 
-interface LeaveFormModel extends Omit<LeaveModel, 'num'> {}
+interface LeaveFormModel
+  extends Omit<
+    LeaveModel,
+    'num' | 'needInOut' | 'isSick' | 'canGoClass' | 'beginDate' | 'endDate'
+  > {
+  needInOut: string;
+  isSick: string;
+  canGoClass: string;
+  beginDate: Date;
+  endDate: Date;
+}
 
-export interface LeaveStore<T extends LeaveFormModel> {
-  data: T;
-  setData: ActionType<T>;
+export interface LeaveStore {
+  beginDate: string | null;
+  endDate: string | null;
   setBeginDate: ActionType<string>;
+  setEndDate: ActionType<string>;
   today: Date;
   beginMaxDate: Date;
   endMinDate: Date;
@@ -39,23 +51,26 @@ const YES_NO = [
   { value: 'false', label: '否' },
 ];
 
-const leaveStore = observable<LeaveStore<LeaveFormModel>>(
+const INITIAL_DATA = {
+  account: '',
+  phone: '',
+  reason: '',
+  needInOut: 'true',
+  isSick: 'false',
+  canGoClass: 'false',
+  beginDate: null,
+  endDate: null,
+};
+
+const leaveStore = observable<LeaveStore>(
   {
-    data: {
-      account: '',
-      phone: '',
-      reason: '',
-      needInOut: true,
-      isSick: false,
-      canGoClass: false,
-      beginDate: '',
-      endDate: '',
-    },
-    setData(fn: (prev: LeaveFormModel) => LeaveFormModel) {
-      this.data = fn(this.data);
-    },
+    beginDate: null,
+    endDate: null,
     setBeginDate(fn: (prev: string) => string) {
-      this.data.beginDate = fn(this.data.beginDate);
+      this.beginDate = fn(this.beginDate || '');
+    },
+    setEndDate(fn: (prev: string) => string) {
+      this.endDate = fn(this.endDate || '');
     },
     get today() {
       return new Date();
@@ -67,20 +82,18 @@ const leaveStore = observable<LeaveStore<LeaveFormModel>>(
     },
     get endMinDate() {
       // 这边的 parseISO 依赖于 constant.DATE_FORMAT 的 yyyy-MM-dd
-      return this.data.beginDate ? parseISO(this.data.beginDate) : this.today;
+      return this.beginDate ? parseISO(this.beginDate) : this.today;
     },
     get endMaxDate() {
-      return add(this.minDate, {
+      return add(this.endMinDate, {
         days: 30,
       });
     },
     get num() {
-      return differenceInDays(this.minDate, parseISO(this.data.endDate));
+      return differenceInDays(parseISO(this.endDate), this.endMinDate);
     },
   },
   {
-    data: observable.deep,
-    setData: action,
     today: computed,
     beginMaxDate: computed,
     endMinDate: computed,
@@ -90,8 +103,15 @@ const leaveStore = observable<LeaveStore<LeaveFormModel>>(
 );
 
 const LeaveApplication = observer(() => {
-  const onSubmit = (values: LeaveModel) => {
-    console.log(values);
+  const onSubmit = (values: LeaveFormModel) => {
+    let data: LeaveModel = {
+      ...(str2Bool(values) as LeaveModel),
+      beginDate: leaveStore.beginDate as string,
+      endDate: leaveStore.endDate as string,
+      num: leaveStore.num,
+    };
+
+    console.log(data);
   };
 
   return (
@@ -112,7 +132,7 @@ const LeaveApplication = observer(() => {
             请假申请
           </Typography>
         </Box>
-        <Form onSubmit={onSubmit} initialValues={leaveStore.data}>
+        <Form onSubmit={onSubmit} initialValues={INITIAL_DATA}>
           {({ handleSubmit }) => (
             <form onSubmit={handleSubmit}>
               <FormInput
@@ -192,6 +212,12 @@ const LeaveApplication = observer(() => {
               <OnChange name={LeaveEnum.BEGIN_DATE}>
                 {(value: Date) => {
                   leaveStore.setBeginDate(() => format(value, constant.DATE_FORMAT));
+                }}
+              </OnChange>
+
+              <OnChange name={LeaveEnum.END_DATE}>
+                {(value: Date) => {
+                  leaveStore.setEndDate(() => format(value, constant.DATE_FORMAT));
                 }}
               </OnChange>
             </form>
