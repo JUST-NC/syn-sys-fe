@@ -124,7 +124,7 @@ const FormToggleGroup: React.FC<FormToggleGroupProps> = (props) => {
                 css={css`
                   // 带 padding 选项，不带 padding 主要是方便写圆形的组件
                   ${withPadding && tw`py-2 px-10`}
-                  ${tw`leading-4 (rounded-full border-solid border-gray-200 border)! mr-4 i-color transition-colors duration-75 ease-linear`}
+                  ${tw`leading-4 (rounded-full border-solid border-gray-200 border)! mr-12 i-color transition-colors duration-75 ease-linear`}
                     // 选中后样式
                   &.Mui-selected {
                     ${tw`text-gray-200 (bg-gray-600 border-transparent)!`}
