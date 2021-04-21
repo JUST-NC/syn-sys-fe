@@ -4,6 +4,7 @@ import { About } from './pages/About';
 import { NotFound } from './pages/NotFound';
 import { Login } from './pages/Login';
 import { ResetPassword } from './pages/ResetPassword';
+import { LeaveApplication } from './pages/LeaveApplication';
 
 export interface RouteModel {
   // 路由路径
@@ -39,6 +40,11 @@ const ABOUT_PAGE: RouteModel = {
   Component: About,
 };
 
+const LEAVE_APPLICATION_PAGE: RouteModel = {
+  path: '/leave_application',
+  Component: LeaveApplication,
+};
+
 const HOME_PAGE: RouteModel = {
   path: '/',
   Component: Home,
@@ -55,8 +61,17 @@ const route: RouteModel[] = [
   LOGIN_PAGE,
   RESET_PASSWORD_PAGE,
   ABOUT_PAGE,
+  LEAVE_APPLICATION_PAGE,
   HOME_PAGE,
   NOT_FOUND_PAGE,
 ];
 
-export { LOGIN_PAGE, RESET_PASSWORD_PAGE, ABOUT_PAGE, HOME_PAGE, NOT_FOUND_PAGE, route };
+export {
+  LOGIN_PAGE,
+  RESET_PASSWORD_PAGE,
+  ABOUT_PAGE,
+  LEAVE_APPLICATION_PAGE,
+  HOME_PAGE,
+  NOT_FOUND_PAGE,
+  route,
+};
