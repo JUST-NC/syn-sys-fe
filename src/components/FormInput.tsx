@@ -22,6 +22,12 @@ const FormInput: React.FC<TextFieldProps> = (props) => {
 
         .MuiInput-input {
           ${tw`pt-6 (i-color bg-white)!`}
+        }
+
+        .MuiFormHelperText-root.Mui-error {
+          position: absolute;
+          bottom: -1.4rem;
+        }
       `}
       InputLabelProps={{ disableAnimation: true, shrink: true }}
       {...props}

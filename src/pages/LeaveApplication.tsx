@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { Form } from 'react-final-form';
 import { observer } from 'mobx-react-lite';
 import { LeaveEnum, LeaveModel } from '../models/leave-model';
-import { computed, observable } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import { ActionType } from '../utils/action-type';
 import { FormDateRangePicker } from '../components/FormDateRangePicker';
 import { OnChange } from 'react-final-form-listeners';
@@ -21,7 +21,13 @@ import { theme } from 'twin.macro';
 import { Link as RouterLink } from 'react-router-dom';
 import { HOME_PAGE } from '../routes';
 import { str2Bool } from '../utils/bool-string';
+import * as Yup from 'yup';
+import { valRequired } from '../utils/validate-format';
+import { makeValidate } from 'mui-rff';
 
+/**
+ * 对 LeaveModel 进行微调，符合表单输入需求
+ */
 interface LeaveFormModel
   extends Omit<
     LeaveModel,
@@ -43,25 +49,16 @@ export interface LeaveStore {
   beginMaxDate: Date;
   endMinDate: Date;
   endMaxDate: Date;
+  beforeToday: Date;
+  afterBeginMaxDate: Date;
+  beforeEndMinDate: Date;
+  afterEndMaxDate: Date;
   num: number;
 }
 
-const YES_NO = [
-  { value: 'true', label: '是' },
-  { value: 'false', label: '否' },
-];
-
-const INITIAL_DATA = {
-  account: '',
-  phone: '',
-  reason: '',
-  needInOut: 'true',
-  isSick: 'false',
-  canGoClass: 'false',
-  beginDate: null,
-  endDate: null,
-};
-
+/**
+ * 目前主要做日期处理
+ */
 const leaveStore = observable<LeaveStore>(
   {
     beginDate: null,
@@ -76,6 +73,7 @@ const leaveStore = observable<LeaveStore>(
       return new Date();
     },
     get beginMaxDate() {
+      // 默认最多可选三十天内的
       return add(this.today, {
         days: 30,
       });
@@ -89,11 +87,27 @@ const leaveStore = observable<LeaveStore>(
         days: 30,
       });
     },
+    get beforeToday() {
+      return add(this.today, { days: -1 });
+    },
+    get beforeEndMinDate() {
+      return add(this.endMinDate, { days: -1 });
+    },
+    get afterBeginMaxDate() {
+      return add(this.beginMaxDate, { days: 1 });
+    },
+    get afterEndMaxDate() {
+      return add(this.endMaxDate, { days: 1 });
+    },
     get num() {
-      return differenceInDays(parseISO(this.endDate), this.endMinDate);
+      return differenceInDays(parseISO(this.endDate), this.endMinDate) + 1;
     },
   },
   {
+    beginDate: observable,
+    endDate: observable,
+    setBeginDate: action,
+    setEndDate: action,
     today: computed,
     beginMaxDate: computed,
     endMinDate: computed,
@@ -102,17 +116,66 @@ const leaveStore = observable<LeaveStore>(
   },
 );
 
-const LeaveApplication = observer(() => {
-  const onSubmit = (values: LeaveFormModel) => {
-    let data: LeaveModel = {
-      ...(str2Bool(values) as LeaveModel),
-      beginDate: leaveStore.beginDate as string,
-      endDate: leaveStore.endDate as string,
-      num: leaveStore.num,
-    };
-
-    console.log(data);
+/**
+ * TODO: 提交接口
+ * TODO: 提交后的模态框
+ * @param values
+ */
+const onSubmit = (values: LeaveFormModel) => {
+  const data: LeaveModel = {
+    ...(str2Bool(values) as LeaveModel),
+    beginDate: leaveStore.beginDate as string,
+    endDate: leaveStore.endDate as string,
+    num: leaveStore.num,
   };
+
+  console.log(data);
+};
+
+/**
+ * 是否选项，用于 ToggleGroup
+ */
+const YES_NO = [
+  { value: 'true', label: '是' },
+  { value: 'false', label: '否' },
+];
+
+/**
+ * 初始值
+ * TODO: 从本地获取学号
+ */
+const INITIAL_DATA: LeaveFormModel = {
+  account: '',
+  phone: '',
+  reason: '',
+  needInOut: 'true',
+  isSick: 'false',
+  canGoClass: 'false',
+  beginDate: leaveStore.today,
+  endDate: leaveStore.today,
+};
+
+/**
+ * 验证器
+ * TODO: 添加更严格的验证范围
+ */
+
+const LeaveApplication = observer(() => {
+  const schema: Yup.AnySchema = Yup.object().shape({
+    account: Yup.string().required(valRequired('账号')),
+    phone: Yup.string().required(valRequired('手机号')),
+    reason: Yup.string().required(valRequired('请假原因')),
+    beginDate: Yup.date()
+      .required(valRequired('开始日期'))
+      .min(leaveStore.beforeToday, '开始日期不能早于今天')
+      .max(leaveStore.afterBeginMaxDate, '开始日期不能超过今天 30 天'),
+    endDate: Yup.date()
+      .required(valRequired('结束日期'))
+      .min(leaveStore.beforeEndMinDate, '结束日期不能早于开始日期')
+      .max(leaveStore.afterEndMaxDate, '结束日期不能超过开始日期 30 天'),
+  });
+
+  const validate = makeValidate(schema);
 
   return (
     <>
@@ -121,7 +184,7 @@ const LeaveApplication = observer(() => {
       </Helmet>
 
       <RouterLink to={HOME_PAGE.path}>
-        <IconButton tw={'fixed -top-4 -right-3 p-4 z-50 bg-gray-300'}>
+        <IconButton tw={'fixed -top-4 -right-3 p-4 z-50 bg-gray-300 shadow-md'}>
           <VscClose size={theme('fontSize.5xl')} color={theme('colors.white')} />
         </IconButton>
       </RouterLink>
@@ -132,14 +195,15 @@ const LeaveApplication = observer(() => {
             请假申请
           </Typography>
         </Box>
-        <Form onSubmit={onSubmit} initialValues={INITIAL_DATA}>
+        <Form onSubmit={onSubmit} initialValues={INITIAL_DATA} validate={validate}>
           {({ handleSubmit }) => (
             <form onSubmit={handleSubmit}>
+              {/*TODO: 这边的 INITIAL_DATA.account !== '' 以后是要去掉的*/}
               <FormInput
                 label={'账号'}
                 name={LeaveEnum.ACCOUNT}
                 autoComplete={'username'}
-                disabled={true}
+                disabled={INITIAL_DATA.account !== ''}
                 required={true}
               />
 
@@ -204,7 +268,11 @@ const LeaveApplication = observer(() => {
                   'fixed bottom-0 left-0 flex justify-center items-center w-screen  py-6 bg-transparent bg-gradient-to-b from-transparent to-white z-50'
                 }
               >
-                <FormButton type={'submit'} size={'medium'}>
+                <FormButton
+                  tw={'shadow-lg hocus:active:(shadow-none) transition-shadow'}
+                  type={'submit'}
+                  size={'medium'}
+                >
                   提交
                 </FormButton>
               </Paper>

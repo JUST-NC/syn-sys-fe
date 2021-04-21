@@ -4,13 +4,14 @@ import DateFnsUtils from '@date-io/date-fns';
 import { zhCN } from 'date-fns/locale';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import Box from '@material-ui/core/Box';
-import { FormLabel, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import 'twin.macro';
 import { constant } from '../utils/constant';
 import { observer } from 'mobx-react-lite';
 import FormControl, { FormControlProps } from '@material-ui/core/FormControl';
 import { css } from '@emotion/react';
 import tw from 'twin.macro';
+import FormLabel from '@material-ui/core/FormLabel';
 
 /**
  * 从属性中排除一些公共值
@@ -60,6 +61,11 @@ const StyledDatePicker = observer<DatePickerProps>(({ ...props }) => (
       .MuiInput-formControl {
         ${tw`before:(border-none!) after:(border-none!)`}
       }
+
+      .MuiFormHelperText-root.Mui-error {
+        position: absolute;
+        top: 2rem;
+      }
     `}
     InputLabelProps={{
       shrink: true,
@@ -103,12 +109,14 @@ const FormDateRangePicker = observer<FormDateRangePickerProps>((props) => {
       required={required}
       {...formControlProps}
     >
-      <FormLabel tw={'text-gray-500'}>{label}</FormLabel>
+      <FormLabel tw={'text-gray-500'} required={required}>
+        {label}
+      </FormLabel>
       <Box tw={'flex items-center pt-8'}>
         <MuiPickersUtilsProvider utils={DateFnsUtils} locale={zhCN}>
-          <StyledDatePicker {...commonProps} {...beginDateProps} />
+          <StyledDatePicker required={required} {...commonProps} {...beginDateProps} />
           <Typography tw={'inline-block mx-4 text-gray-400'}>{betweenLabel}</Typography>
-          <StyledDatePicker {...commonProps} {...endDateProps} />
+          <StyledDatePicker required={required} {...commonProps} {...endDateProps} />
         </MuiPickersUtilsProvider>
       </Box>
     </FormControl>
