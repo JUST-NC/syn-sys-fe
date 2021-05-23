@@ -1,11 +1,12 @@
 import { utils } from './utils';
 import { FlowStatus } from '../enum/FlowStatus';
 import { HolidayForm } from '../models/holidayForm-model';
+import { formStore } from '../stores/form-store';
 
 //请假表单接口的默认url
-const CREATE = '/holidays/';
+const CREATE = '/holidayss';
 
-interface ParamsToGetForm {
+export interface ParamsToGetForm {
   //页码（从1开始）
   page: number;
   //页大小
@@ -14,6 +15,7 @@ interface ParamsToGetForm {
   flow_status: FlowStatus;
 }
 
+//有关请假的请求
 const holiday = {
   //请假
   apply<T>(form: T) {
@@ -25,11 +27,14 @@ const holiday = {
       }
     });
   },
-  //获取表单
+  //获取请假单
   get(params: ParamsToGetForm) {
     utils.get(CREATE, params).then((res) => {
-      let resData: HolidayForm = res.data;
-      console.log(resData.flows[0].activities);
+      //数据处理
+      let resData: HolidayForm = res.data.data;
+      formStore.concat(resData.flows);
+      formStore.totalCount = resData.totalCount;
+      // console.log(resData.flows[0].activities);
     });
   },
 };

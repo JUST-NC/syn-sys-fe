@@ -5,20 +5,23 @@ export interface BasicActivity {
   //请假人学号
   createHolidayForm: number;
   //班导师审批，即审批人工号
-  classTutor: string | null;
+  classTutor?: string | null;
   //学生管理科审批，即审批人工号
-  studentManageApprove: string | null;
+  studentManageApprove?: string | null;
   //驳回理由
-  rejectReason: string;
+  rejectReason?: string;
   //空串
-  agree: string;
+  agree?: string;
 }
 
+//请假单表单
 export interface BasicHoliday {
   //表单id
   id: number;
   //请假人id
   userId: number;
+  //请假人姓名
+  userName: string;
   //请假开始日期
   beginDate: string;
   //请假结束日期
@@ -43,7 +46,7 @@ export interface BasicHoliday {
 }
 
 //请假表流程数据
-export interface flow {
+export interface Flow {
   //当前表单所处流程或状态
   activities: BasicActivity;
   //表单数据
@@ -51,9 +54,10 @@ export interface flow {
   //TODO: 用户
 }
 
+//后端发送来的请假单和其他相关信息
 export interface HolidayForm {
   //请假单合集
-  flows: flow[];
+  flows: Flow[];
   //请假单数量
   totalCount: number;
   //请假单页数

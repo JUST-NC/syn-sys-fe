@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import localforage from 'localforage';
 import CryptoJs from 'crypto-js';
 

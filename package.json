@@ -30,6 +30,8 @@
     "react-dom": "^17.0.1",
     "react-final-form": "^6.5.2",
     "react-helmet-async": "^1.0.9",
+    "react-icons": "^4.2.0",
+    "react-infinite-scroll-component": "^6.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "rxjs": "^6.6.6",
@@ -98,5 +100,5 @@
       "preset": "emotion"
     }
   },
-  "proxy": "http://172.22.48.1:4523/mock/371924"
+  "proxy": "http://172.30.80.1:4523/mock/371924"
 }

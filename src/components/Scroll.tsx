@@ -1,68 +1,49 @@
-import React, { Component, useState } from 'react';
+import React, { ReactNode } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
-interface MyProps {
-  show: boolean;
-  className?: string;
+export interface ScrollProps {
+  data: any[];
+  //列表长度
+  dataLength: number;
+  //下拉加载事件
+  fetchMoreData: any;
+  //是否有更多数据
+  hasMore: boolean;
+  //下拉加载的过渡组件
+  loader?: ReactNode;
+  //其他
+  otherProps?: any;
 }
 
-const FooSpan: React.FC<MyProps> = (props, Component?: React.FC) => {
-  if (!props.show) {
-    return null;
-  }
+type ItemComponent<P = any> =
+  | (new (props: P) => React.Component)
+  | ((props: P & { children?: React.ReactNode }) => React.ReactElement<any> | null);
 
-  return (
-    <div className={props.className} tw={'w-full'}>
-      {Component ? <Component /> : ''}
-    </div>
-  );
-};
-
-const Scroll: React.FC<{}> = (
-  props,
-  ListComponent: React.FC,
-  topWrapper: boolean = true,
-  bottomWrapper: boolean = false,
+//高阶组件：滚动加载
+const Scroll = (
+  ScrollItem:
+    | React.FC<{ props: any }>
+    | React.FunctionComponent<{ props: any }>
+    | React.ComponentType<{ props: any }>,
+  props: ScrollProps,
 ) => {
-  //控制刷新过程中的显示
-  const [refresh, setRefresh] = useState({
-    beforeRefresh: true,
-    isRefreshing: false,
-    afterRefreshed: false,
-  });
-  //控制加载过程中的显示
-  const [load, setLoad] = useState({
-    beforeLoad: true,
-    isLoading: false,
-    afterLoaded: false,
-  });
-
-  return (
-    <>
-      <FooSpan show={topWrapper} className={'topWrapper'}>
-        <FooSpan show={refresh.beforeRefresh}>
-          <div>松开准备刷新页面</div>
-        </FooSpan>
-        <FooSpan show={refresh.isRefreshing}>
-          <div>正在刷新网页</div>
-        </FooSpan>
-        <FooSpan show={refresh.afterRefreshed}>
-          <div>刷新完成</div>
-        </FooSpan>
-      </FooSpan>
-      <ListComponent />
-      <FooSpan show={bottomWrapper} className={'bottomWrapper'}>
-        <FooSpan show={load.beforeLoad}>
-          <div>松开准备加载</div>
-        </FooSpan>
-        <FooSpan show={load.isLoading}>
-          <div>加载中</div>
-        </FooSpan>
-        <FooSpan show={load.afterLoaded}>
-          <div>加载完成</div>
-        </FooSpan>
-      </FooSpan>
-    </>
-  );
+  const ScrollInfinite = () => {
+    return (
+      <div>
+        <InfiniteScroll
+          dataLength={props.dataLength}
+          next={props.fetchMoreData}
+          hasMore={props.hasMore}
+          loader={props.loader}
+        >
+          {props.data.map((index, key) => {
+            return <ScrollItem key={key} props={index} {...props.otherProps} />;
+          })}
+        </InfiniteScroll>
+      </div>
+    );
+  };
+  return ScrollInfinite;
 };
 
 export { Scroll };

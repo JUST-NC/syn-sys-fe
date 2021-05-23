@@ -3,7 +3,7 @@ import { BasicUser } from '../models/user-model';
 import { userStore } from '../stores/user-store';
 import localforage from 'localforage';
 
-const LOGIN = '/dev-api/login';
+const LOGIN = '/login';
 
 //登录api
 export const login = <T>(data: T) => {

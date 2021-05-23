@@ -3,6 +3,7 @@ import { Home } from './pages/Home';
 import { About } from './pages/About';
 import { NotFound } from './pages/NotFound';
 import { Login } from './pages/Login';
+import { Test } from './pages/Test';
 
 export interface RouteModel {
   // 路由路径
@@ -34,6 +35,11 @@ const ABOUT_PAGE: RouteModel = {
   Component: About,
 };
 
+const TEST_PAGE: RouteModel = {
+  path: '/test',
+  Component: Test,
+};
+
 const HOME_PAGE: RouteModel = {
   path: '/',
   Component: Home,
@@ -46,6 +52,12 @@ const NOT_FOUND_PAGE: RouteModel = {
   Component: NotFound,
 };
 
-const route: RouteModel[] = [LOGIN_PAGE, ABOUT_PAGE, HOME_PAGE, NOT_FOUND_PAGE];
+const route: RouteModel[] = [
+  LOGIN_PAGE,
+  ABOUT_PAGE,
+  TEST_PAGE,
+  HOME_PAGE,
+  NOT_FOUND_PAGE,
+];
 
-export { LOGIN_PAGE, ABOUT_PAGE, HOME_PAGE, NOT_FOUND_PAGE, route };
+export { LOGIN_PAGE, ABOUT_PAGE, TEST_PAGE, HOME_PAGE, NOT_FOUND_PAGE, route };
