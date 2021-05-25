@@ -8,7 +8,6 @@ import { Test } from './pages/Test';
 import { ResetPassword } from './pages/ResetPassword';
 import { LeaveApplication } from './pages/LeaveApplication';
 
-
 export interface RouteModel {
   // 路由路径
   path: string;
@@ -46,7 +45,7 @@ const ABOUT_PAGE: RouteModel = {
 const TEST_PAGE: RouteModel = {
   path: '/test',
   Component: Test,
-}
+};
 
 const LEAVE_APPLICATION_PAGE: RouteModel = {
   path: '/leave_application',

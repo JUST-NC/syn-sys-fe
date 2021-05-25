@@ -18,7 +18,11 @@ const formStore = observable<FormStore>({
     this.flowList.push(flow);
   },
   concat(flows: Flow[]): void {
-    this.flowList = this.flowList.concat(flows);
+    for (const flow of flows) {
+      if (!this.flowList.includes(flow)) {
+        this.append(flow);
+      }
+    }
   },
   get length() {
     return this.flowList.length;

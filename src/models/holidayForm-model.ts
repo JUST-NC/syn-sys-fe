@@ -1,4 +1,5 @@
 import { CanOrNot } from '../enum/CanOrNot';
+import { FlowStatus } from '../enum/FlowStatus';
 
 //流程
 export interface BasicActivity {
@@ -29,7 +30,7 @@ export interface BasicHoliday {
   //请假理由
   reason: string;
   //表单状 态：审批中，已审批等
-  status: string;
+  status: FlowStatus;
   //是否需要进出校门， can or cannot
   needInOut: CanOrNot;
   //是否生病

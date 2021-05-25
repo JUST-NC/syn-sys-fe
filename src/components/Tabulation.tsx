@@ -4,13 +4,21 @@ import { holiday } from '../apis/holiday';
 import { formStore } from '../stores/form-store';
 import { observer } from 'mobx-react-lite';
 import { TabulationItem } from './TabulationItem';
+import { FlowStatus } from '../enum/FlowStatus';
+
+export interface TabulationProps {
+  //每页数据的个数
+  pageSize: number;
+  //表单类型：
+  flow_status: FlowStatus;
+}
 
 //查看表单的列表
-const Tabulation = observer(() => {
+const Tabulation = observer((props: TabulationProps) => {
   //控制页
   const [page, setPage] = useState({
     //每页的个数
-    size: 10,
+    size: props.pageSize,
     //当前页（加载到的最新页）
     endPoint: 0,
     //是否有更新内容
@@ -19,7 +27,11 @@ const Tabulation = observer(() => {
 
   //加载列表
   const fetchMoreData = () => {
-    holiday.get({ page: page.endPoint, page_size: page.size, flow_status: 0 });
+    holiday.get({
+      page: page.endPoint,
+      page_size: page.size,
+      flow_status: props.flow_status,
+    });
     setPage({
       endPoint: page.endPoint++,
       more: true,
@@ -43,6 +55,9 @@ const Tabulation = observer(() => {
     hasMore: page.more,
     loader: <h4>Loading</h4>,
     data: formStore.flowList,
+    otherProps: {
+      status: props.flow_status,
+    },
   });
 
   return (
