@@ -3,4 +3,5 @@ export interface BasicUser {
   phone: string;
   avatar: string;
   major: string;
+  username: string;
 }

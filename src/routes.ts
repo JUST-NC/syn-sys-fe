@@ -5,6 +5,10 @@ import { NotFound } from './pages/NotFound';
 import { Login } from './pages/Login';
 import { Test } from './pages/Test';
 
+import { ResetPassword } from './pages/ResetPassword';
+import { LeaveApplication } from './pages/LeaveApplication';
+
+
 export interface RouteModel {
   // 路由路径
   path: string;
@@ -22,12 +26,16 @@ export interface RouteModel {
 /**
  * 路由表
  *
- * Login 在 App.tsx 中配置
+ *!!! 完成配置后别忘了加到下方的数组、导出模块中
  */
-
 const LOGIN_PAGE: RouteModel = {
   path: '/login',
   Component: Login,
+};
+
+const RESET_PASSWORD_PAGE: RouteModel = {
+  path: '/reset_password',
+  Component: ResetPassword,
 };
 
 const ABOUT_PAGE: RouteModel = {
@@ -38,12 +46,17 @@ const ABOUT_PAGE: RouteModel = {
 const TEST_PAGE: RouteModel = {
   path: '/test',
   Component: Test,
+}
+
+const LEAVE_APPLICATION_PAGE: RouteModel = {
+  path: '/leave_application',
+  Component: LeaveApplication,
 };
 
 const HOME_PAGE: RouteModel = {
   path: '/',
   Component: Home,
-  auth: true,
+  // auth: true,
   exact: true,
 };
 
@@ -54,10 +67,21 @@ const NOT_FOUND_PAGE: RouteModel = {
 
 const route: RouteModel[] = [
   LOGIN_PAGE,
-  ABOUT_PAGE,
   TEST_PAGE,
+  RESET_PASSWORD_PAGE,
+  ABOUT_PAGE,
+  LEAVE_APPLICATION_PAGE
   HOME_PAGE,
   NOT_FOUND_PAGE,
 ];
 
-export { LOGIN_PAGE, ABOUT_PAGE, TEST_PAGE, HOME_PAGE, NOT_FOUND_PAGE, route };
+export {
+  LOGIN_PAGE,
+  RESET_PASSWORD_PAGE,
+  ABOUT_PAGE,
+  TEST_PAGE,
+  LEAVE_APPLICATION_PAGE,
+  HOME_PAGE,
+  NOT_FOUND_PAGE,
+  route,
+};

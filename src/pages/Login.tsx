@@ -3,11 +3,15 @@ import { LoginForm } from '../components/LoginForm';
 import { Link, Paper, Typography } from '@material-ui/core';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { HOME_PAGE } from '../routes';
+import { RESET_PASSWORD_PAGE } from '../routes';
 import tw from 'twin.macro';
 import Div100vh from 'react-div-100vh';
 
-const Block = tw.div`mb-20`;
+/**
+ * TODO: Rewrite FormTextField's style
+ */
+
+const Block = tw.div`mb-16`;
 
 const Login: React.FC = () => {
   return (
@@ -21,7 +25,7 @@ const Login: React.FC = () => {
           <Typography tw={'text-gray-400'} variant={'h6'} gutterBottom={true}>
             江苏科技大学
           </Typography>
-          <Typography tw={'text-gray-800'} variant={'h3'} gutterBottom={true}>
+          <Typography tw={'i-color'} variant={'h3'} gutterBottom={true}>
             欢迎回来！
           </Typography>
         </Block>
@@ -35,7 +39,7 @@ const Login: React.FC = () => {
             tw={'text-gray-400'}
             color={'initial'}
             component={RouterLink}
-            to={HOME_PAGE.path}
+            to={RESET_PASSWORD_PAGE.path}
           >
             忘记密码？
           </Link>
