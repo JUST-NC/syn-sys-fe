@@ -3,8 +3,11 @@ import { Home } from './pages/Home';
 import { About } from './pages/About';
 import { NotFound } from './pages/NotFound';
 import { Login } from './pages/Login';
+import { Test } from './pages/Test';
+
 import { ResetPassword } from './pages/ResetPassword';
 import { LeaveApplication } from './pages/LeaveApplication';
+
 
 export interface RouteModel {
   // 路由路径
@@ -40,6 +43,11 @@ const ABOUT_PAGE: RouteModel = {
   Component: About,
 };
 
+const TEST_PAGE: RouteModel = {
+  path: '/test',
+  Component: Test,
+}
+
 const LEAVE_APPLICATION_PAGE: RouteModel = {
   path: '/leave_application',
   Component: LeaveApplication,
@@ -59,9 +67,10 @@ const NOT_FOUND_PAGE: RouteModel = {
 
 const route: RouteModel[] = [
   LOGIN_PAGE,
+  TEST_PAGE,
   RESET_PASSWORD_PAGE,
   ABOUT_PAGE,
-  LEAVE_APPLICATION_PAGE,
+  LEAVE_APPLICATION_PAGE
   HOME_PAGE,
   NOT_FOUND_PAGE,
 ];
@@ -70,6 +79,7 @@ export {
   LOGIN_PAGE,
   RESET_PASSWORD_PAGE,
   ABOUT_PAGE,
+  TEST_PAGE,
   LEAVE_APPLICATION_PAGE,
   HOME_PAGE,
   NOT_FOUND_PAGE,

@@ -1,4 +1,4 @@
-import { autorun, observable } from 'mobx';
+import { autorun, computed, observable } from 'mobx';
 import { BasicUser } from '../models/user-model';
 import * as localforage from 'localforage';
 export interface UserStore {

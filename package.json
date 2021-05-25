@@ -14,9 +14,11 @@
     "@material-ui/pickers": "^3.2.10",
     "@types/react-final-form-listeners": "^1.0.0",
     "axios": "^0.21.1",
+    "crypto-js": "^4.0.0",
     "date-fns": "^2.16.1",
     "final-form": "^4.20.1",
     "framer-motion": "^4.0.2",
+    "http-proxy-middleware": "^1.1.0",
     "localforage": "^1.9.0",
     "lodash": "^4.17.20",
     "mobx": "^6.1.8",
@@ -31,6 +33,7 @@
     "react-final-form-listeners": "^1.0.3",
     "react-helmet-async": "^1.0.9",
     "react-icons": "^4.2.0",
+    "react-infinite-scroll-component": "^6.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "rxjs": "^6.6.6",
@@ -66,6 +69,7 @@
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.3",
     "@testing-library/user-event": "^12.6.0",
+    "@types/crypto-js": "^4.0.1",
     "@types/jest": "^26.0.20",
     "@types/lodash": "^4.14.168",
     "@types/node": "^12.19.14",
@@ -98,5 +102,6 @@
       "preset": "emotion"
     }
   },
+
   "proxy": "http://172.27.144.1:4523/mock/366504"
 }
