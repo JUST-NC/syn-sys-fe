@@ -65,10 +65,9 @@ const TabulationItem: React.FC<TabulationItemProps> = ({ props, data }) => {
                 'rounded-md p-4 h-60 border-white bg-gray-50 ring-0 hover:border-0 hover:outline-none'
               }
             >
-              <h2 id="transition-modal-title">临时标题</h2>
-              <p id="transition-modal-description">
-                If you disable JavaScript, you will still see me.
-              </p>
+              <h2 id="transition-modal-title">{data.holiday?.userName}</h2>
+
+              <p id="transition-modal-description">{data.holiday?.reason}</p>
             </div>
           </Fade>
         </Modal>

@@ -1,6 +1,10 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import localforage from 'localforage';
 import CryptoJs from 'crypto-js';
+import { ResponseModel } from '../models/response-model';
+import { ValueOf } from '../utils/valueof';
+import _ from 'lodash';
+import { userStore } from '../stores/user-store';
 
 const AES_KEY = 'abcdefghijkl';
 const IV = '123456789';
@@ -11,16 +15,47 @@ axios.defaults.baseURL = '';
 //创建自定义的axios的实例
 const request = axios.create({
   timeout: 3000,
-  headers: { token: localforage.getItem('token') },
 });
+
+type ResponseOnlyData<R extends ResponseModel> = Omit<R, 'code' | 'msg'>;
 
 const utils = {
   //get和post
-  post<T>(url: string, data: T) {
-    return request.post(url, data);
+  post<T, R extends ResponseModel>(url: string, data: T): Promise<ResponseOnlyData<R>> {
+    return request
+      .post<T, AxiosResponse<R>>(url, data, {
+        headers: userStore.token ? { Authorization: userStore.authorization } : undefined,
+      })
+      .then((res) => (res.status === 200 ? res.data : Promise.reject('接口访问超时')))
+      .then((resData) =>
+        resData.code === 200
+          ? (_.omit<R>(resData, ['code', 'msg']) as ResponseOnlyData<R>)
+          : Promise.reject(resData.msg),
+      )
+      .catch((err: string) => {
+        console.error(err);
+        return Promise.reject(err);
+      });
   },
-  get<T>(url: string, params: T) {
-    return request.get(url, { params: params });
+  get<R extends ResponseModel, P = void>(
+    url: string,
+    params?: P,
+  ): Promise<ResponseOnlyData<R>> {
+    return request
+      .get<R>(url, {
+        params: params,
+        headers: userStore.token ? { Authorization: userStore.authorization } : undefined,
+      })
+      .then((res) => (res.status === 200 ? res.data : Promise.reject('接口访问超时')))
+      .then((resData) =>
+        resData.code === 200
+          ? (_.omit<R>(resData, ['code', 'msg']) as ResponseOnlyData<R>)
+          : Promise.reject(resData.msg),
+      )
+      .catch((err: string) => {
+        console.error(err);
+        return Promise.reject(err);
+      });
   },
 };
 

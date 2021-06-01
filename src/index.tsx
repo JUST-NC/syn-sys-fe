@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { HelmetProvider } from 'react-helmet-async';
+import { CookiesProvider } from 'react-cookie';
 import localforage from 'localforage';
 import { GlobalStyles, theme } from 'twin.macro';
 import {
@@ -24,27 +25,29 @@ const modeTheme = unstable_createMuiStrictModeTheme({}, zhCN);
 ReactDOM.render(
   <React.StrictMode>
     <HelmetProvider>
-      <StylesProvider injectFirst>
-        <ThemeProvider theme={modeTheme}>
-          <GlobalStyles />
-          <Global
-            styles={css`
-              button:focus {
-                outline: none !important;
-              }
+      <CookiesProvider>
+        <StylesProvider injectFirst>
+          <ThemeProvider theme={modeTheme}>
+            <GlobalStyles />
+            <Global
+              styles={css`
+                button:focus {
+                  outline: none !important;
+                }
 
-              // 处理 input:-internal-autofill-selected 蓝色背景的问题，目前的妥协方案
-              // FIXME: 修复 input 背景的问题
-              // 忽略下方的红色波浪线，这只是 webstorm 暂时没有这个选择器
-              input:-internal-autofill-selected {
-                -webkit-text-fill-color: ${theme('mainColor')} !important;
-                transition: background-color 5000s ease-in-out 0s !important;
-              }
-            `}
-          />
-          <App />
-        </ThemeProvider>
-      </StylesProvider>
+                // 处理 input:-internal-autofill-selected 蓝色背景的问题，目前的妥协方案
+                // FIXME: 修复 input 背景的问题
+                // 忽略下方的红色波浪线，这只是 webstorm 暂时没有这个选择器
+                input:-internal-autofill-selected {
+                  -webkit-text-fill-color: ${theme('mainColor')} !important;
+                  transition: background-color 5000s ease-in-out 0s !important;
+                }
+              `}
+            />
+            <App />
+          </ThemeProvider>
+        </StylesProvider>
+      </CookiesProvider>
     </HelmetProvider>
   </React.StrictMode>,
   document.getElementById('root'),

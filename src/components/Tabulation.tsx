@@ -10,7 +10,7 @@ export interface TabulationProps {
   //每页数据的个数
   pageSize: number;
   //表单类型：
-  flow_status: FlowStatus;
+  flow_status: FlowStatus | boolean;
 }
 
 //查看表单的列表
@@ -27,11 +27,13 @@ const Tabulation = observer((props: TabulationProps) => {
 
   //加载列表
   const fetchMoreData = () => {
-    holiday.get({
-      page: page.endPoint,
-      page_size: page.size,
-      flow_status: props.flow_status,
-    });
+    // holiday.get({
+    //   page: page.endPoint,
+    //   page_size: page.size,
+    //   //应该为props.flow_status，但是无法控制apifox返回的status
+    //   //TODO: 调整
+    //   flow_status: 0,
+    // });
     setPage({
       endPoint: page.endPoint++,
       more: true,

@@ -14,9 +14,11 @@ interface FormStore {
 const formStore = observable<FormStore>({
   flowList: [],
   totalCount: 0,
+
   append(flow: Flow): void {
     this.flowList.push(flow);
   },
+
   concat(flows: Flow[]): void {
     for (const flow of flows) {
       if (!this.flowList.includes(flow)) {
@@ -24,6 +26,7 @@ const formStore = observable<FormStore>({
       }
     }
   },
+
   get length() {
     return this.flowList.length;
   },
