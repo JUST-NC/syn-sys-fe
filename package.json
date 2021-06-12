@@ -27,6 +27,7 @@
     "nanoid": "^3.1.22",
     "react": "^17.0.1",
     "react-beautiful-dnd": "^13.0.0",
+    "react-cookie": "^4.0.3",
     "react-div-100vh": "^0.5.6",
     "react-dom": "^17.0.1",
     "react-final-form": "^6.5.2",
@@ -102,6 +103,5 @@
       "preset": "emotion"
     }
   },
-
-  "proxy": "http://172.27.144.1:4523/mock/366504"
+  "proxy": "http://192.168.0.100:81"
 }

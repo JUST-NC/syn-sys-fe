@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { FlowStatus } from '../enum/FlowStatus';
 
 export interface ScrollProps {
   data: any[];
@@ -23,8 +24,8 @@ type ItemComponent<P = any> =
 const Scroll = (
   ScrollItem:
     | React.FC<{ props: any }>
-    | React.FunctionComponent<{ props: any }>
-    | React.ComponentType<{ props: any }>,
+    | React.FunctionComponent<{ data: any; props: any }>
+    | React.ComponentType<{ data: any; props: any }>,
   props: ScrollProps,
 ) => {
   const ScrollInfinite = () => {
@@ -37,7 +38,7 @@ const Scroll = (
           loader={props.loader}
         >
           {props.data.map((index, key) => {
-            return <ScrollItem key={key} props={index} {...props.otherProps} />;
+            return <ScrollItem key={key} props={props.otherProps} data={index} />;
           })}
         </InfiniteScroll>
       </div>

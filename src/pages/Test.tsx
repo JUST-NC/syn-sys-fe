@@ -11,7 +11,7 @@ const Test: React.FC = () => {
       </Helmet>
 
       <Paper elevation={0} tw={'py-20 px-4 bg-gray-100'}>
-        <Tabulation />
+        <Tabulation pageSize={10} flow_status={0} />
       </Paper>
     </>
   );

@@ -7,7 +7,7 @@ import { Test } from './pages/Test';
 
 import { ResetPassword } from './pages/ResetPassword';
 import { LeaveApplication } from './pages/LeaveApplication';
-
+import { FormHistory } from './pages/FormHistory';
 
 export interface RouteModel {
   // 路由路径
@@ -43,10 +43,15 @@ const ABOUT_PAGE: RouteModel = {
   Component: About,
 };
 
+const FORM_HISTORY_PAGE: RouteModel = {
+  path: '/form_history',
+  Component: FormHistory,
+};
+
 const TEST_PAGE: RouteModel = {
   path: '/test',
   Component: Test,
-}
+};
 
 const LEAVE_APPLICATION_PAGE: RouteModel = {
   path: '/leave_application',
@@ -70,6 +75,7 @@ const route: RouteModel[] = [
   TEST_PAGE,
   RESET_PASSWORD_PAGE,
   ABOUT_PAGE,
+  FORM_HISTORY_PAGE,
   LEAVE_APPLICATION_PAGE,
   HOME_PAGE,
   NOT_FOUND_PAGE,
@@ -79,6 +85,7 @@ export {
   LOGIN_PAGE,
   RESET_PASSWORD_PAGE,
   ABOUT_PAGE,
+  FORM_HISTORY_PAGE,
   TEST_PAGE,
   LEAVE_APPLICATION_PAGE,
   HOME_PAGE,
